@@ -1,14 +1,27 @@
 package bibliotecaAnime.utilidades;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class Conexao {
-
-	public Conexao() {
-		// TODO Auto-generated constructor stub
+	public static Connection con = null;
+	public static Connection conectar() {
+		String url = "jdbc:postgresql://localhost:5432/animes";
+		String user = "postgres";
+		String senha = "postgre";
+		try {
+			con = DriverManager.getConnection(url, user, senha);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} 
+		return con;
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	
+	public static void desconectar() {
+		con = null;
 	}
-
+	
 }
+
+
