@@ -39,13 +39,43 @@ public class DaoAnime  implements ICrud<Animes>{
 
 	@Override
 	public boolean alterar(Animes obj) {
-		// TODO Auto-generated method stub
+		String sql = "UPDATE public.animes \r\n"
+				+ "	SET nome=?, numerotemporadas=?, duracaodoep=?, streamdisponivel=?, legendadisponivel=?\r\n"
+				+ "	WHERE id= ?";
+		Connection con = Conexao.conectar();
+		PreparedStatement stm;
+		try {
+			stm = con.prepareStatement(sql);
+			stm.setString(1, obj.getNome());
+			stm.setInt(2, obj.getNumeroTemporadas());
+			stm.setInt(3,  obj.getDuracaoDoEp());
+			stm.setString(4, obj.getStreamDisponivel());
+			stm.setString(5, obj.getLegendaDisponivel());
+			stm.execute();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			Conexao.desconectar();
+		}
 		return false;
 	}
 
 	@Override
 	public void excluir(int id) {
-		// TODO Auto-generated method stub
+		String sql = "delete from animes where id= " + id;
+		Connection con = Conexao.conectar();
+		PreparedStatement stm;
+		try {
+			stm = con.prepareStatement(sql);
+			stm.execute();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} 
+		finally {
+			Conexao.desconectar();
+		}
 		
 	}
 
@@ -69,14 +99,15 @@ public class DaoAnime  implements ICrud<Animes>{
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		
-		return null;
+		finally {
+		Conexao.desconectar();
+		}
+		return anime;
 	}
 
 	@Override
 	public List<Animes> consultar() {
-		List<Animes> animes = new ArrayList<Animes>();
+		List<Animes> animes = new ArrayList<>();
 		String sql = "SELECT * FROM animes";
 		Connection con = Conexao.conectar();
 		try {
